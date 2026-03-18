@@ -4,11 +4,12 @@ on:
   push:
     branches:
       - master
-      - Stable*
+      - two_video_streams      
     tags:
       - v*
     paths-ignore:
       - docs/**
+     workflow_dispatch:
   pull_request:
     paths:
       - .github/workflows/windows.yml
