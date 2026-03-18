@@ -1,0 +1,44 @@
+name: QGC 自定义构建 (Linux AppImage + Android)
+
+on:
+  push:
+    branches: [ "main", "two_video_streams" ]   # 你的分支名
+  workflow_dispatch:                     # 手动触发按钮
+
+jobs:
+  linux:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install Qt & Dependencies
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: '6.8.0'          # v5.0.8 推荐 Qt 6.8+
+          modules: 'qtmultimedia qtpositioning qtcharts qtlocation qt5compat'
+          cache: true
+
+      - name: Install Linux deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev \
+            libgstreamer-plugins-good1.0-dev libgstreamer-plugins-bad1.0-dev \
+            libqt6multimedia6 libqt6multimediawidgets6 \
+            libgl1-mesa-dev libpulse-dev libasound2-dev
+
+      - name: Build QGC (Linux)
+        run: |
+          qmake -r CONFIG+=Release
+          make -j$(nproc)
+          ./deploy/create_linux_appimage.sh   # 官方脚本生成 AppImage
+
+      - name: Upload Linux Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: QGC-Linux-AppImage
+          path: QGroundControl.AppImage
+
+  # Android 可再加一个 job（官方 android.yml 更完整，可直接复制修改）
