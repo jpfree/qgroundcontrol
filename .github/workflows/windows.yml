@@ -4,9 +4,10 @@ on:
   push:
     branches:
       - master
-      - Stable*
+      - two_video_streams
     tags:
       - v*
+    workflow_dispatch:
     paths-ignore:
       - docs/**
   pull_request:
@@ -17,6 +18,8 @@ on:
       - CMakeLists.txt
       - cmake/**
       - tools/setup/*windows*
+
+      
 
 # concurrency:
 #   group: ${{ github.workflow }}-${{ github.ref }}
