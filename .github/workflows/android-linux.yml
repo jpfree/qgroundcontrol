@@ -3,8 +3,8 @@ name: Android-Linux
 on:
   push:
     branches:
-      - master
-      - 'Stable*'
+      - two_video_streams
+
     tags:
       - 'v*'
     paths-ignore:
