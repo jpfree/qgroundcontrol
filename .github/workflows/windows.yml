@@ -3,11 +3,10 @@ name: Windows
 on:
   push:
     branches:
-      - master
       - two_video_streams
     tags:
       - v*
-    workflow_dispatch:
+   workflow_dispatch:
     paths-ignore:
       - docs/**
   pull_request:
